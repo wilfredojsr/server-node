@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { Configurations } from './configurations';
 import {Express} from "express";
-import { join } from 'path';
 
 export class Application {
   private readonly port = Configurations.get('PORT') || 3000;
@@ -17,14 +16,11 @@ export class Application {
       console.warn('Routes not provided. Consider using Application.build({ routes: "path/to/routes" })');
       return newApp;
     }
-    const pwd = process.cwd();
-    const path = join(pwd, options?.routes);
-    const routes: Record<any, any> = require(path);
-    if (!routes) {
+    if (!options.routes) {
       console.warn('Routes not found');
       return newApp;
     }
-    Object.values(routes).forEach(route => (new route()['instance'](newApp.app)));
+    Object.values(options.routes).forEach((route: any) => (new route()['instance'](newApp.app)));
     return newApp;
   }
 
@@ -47,5 +43,5 @@ export class Application {
 }
 
 interface ApplicationOptions {
-  routes: string;
+  routes: [any];
 }
