@@ -7,6 +7,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start:dev": "nodemon",
     "start:prod": "npm run build && cd ./dist && node ./main.js",
