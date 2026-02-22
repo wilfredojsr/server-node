@@ -2,14 +2,14 @@
   "name": "@wilfredojsr/server-node",
   "version": "1.0.4",
   "description": "",
-  "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "start:dev": "nodemon",
-    "start:prod": "npm run build && cd ./dist && node ./src/main.js",
+    "start:prod": "npm run build && cd ./dist && node ./main.js",
     "build": "npm run clean && tsc",
     "clean": "rimraf dist"
   },
