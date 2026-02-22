@@ -29,7 +29,7 @@ export function Routes(path: string) {
   };
 }
 
-export function Route(method: string, path: string) {
+export function Route(method: string, path: string, options?: RouteOptions) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const func = descriptor.value;
     const route = new IRoute();
@@ -49,6 +49,10 @@ export function Route(method: string, path: string) {
 
       const args = [...params, ...query, ...body, ...request, ...response].sort((a, b) => a.index - b.index)
         .map(param => req.params[param.name] || req.query[param.name] || (param.name === '@@body@@' ? req.body : undefined) || (param.name === '@@request@@' ? req : undefined) || (param.name === '@@response@@' ? res : undefined));
+
+      if (options?.render) {
+        return func.apply(target, args);
+      }
 
       res.send(func.apply(target, args));
     };
@@ -130,4 +134,8 @@ class IRoute {
   method: string;
   path: string;
   handler: (req: any, res: any) => any;
+}
+
+interface RouteOptions {
+  render?: boolean;
 }
