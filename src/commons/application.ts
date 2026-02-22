@@ -22,7 +22,7 @@ export class Application {
     return this;
   }
 
-  pipe(func: (self?: Express) => void) {
+  pipe(func: (self: Express) => void) {
     typeof func === 'function' && func(this.app);
     return this;
   }
