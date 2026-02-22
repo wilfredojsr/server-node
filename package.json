@@ -1,5 +1,5 @@
 {
-  "name": "server-node",
+  "name": "@wilfredojsr/server-node",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
