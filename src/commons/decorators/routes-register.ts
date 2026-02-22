@@ -3,6 +3,9 @@ import 'reflect-metadata';
 const paramMetadataKey = Symbol('Param');
 const queryMetadataKey = Symbol('Query');
 const bodyMetadataKey = Symbol('Body');
+const requestMetadataKey = Symbol('Request');
+const responseMetadataKey = Symbol('Response');
+
 
 export function Routes(path: string) {
   return function (target: any) {
@@ -39,9 +42,13 @@ export function Route(method: string, path: string) {
         Reflect.getOwnMetadata(queryMetadataKey, target, propertyKey) || [];
       let body: { index: number, name: string }[] =
         Reflect.getOwnMetadata(bodyMetadataKey, target, propertyKey) || [];
+      let request: { index: number, name: string }[] =
+          Reflect.getOwnMetadata(requestMetadataKey, target, propertyKey) || [];
+      let response: { index: number, name: string }[] =
+          Reflect.getOwnMetadata(responseMetadataKey, target, propertyKey) || [];
 
-      const args = [...params, ...query, ...body].sort((a, b) => a.index - b.index)
-        .map(param => req.params[param.name] || req.query[param.name] || (param.name === '@@body@@' ? req.body : undefined));
+      const args = [...params, ...query, ...body, ...request, ...response].sort((a, b) => a.index - b.index)
+        .map(param => req.params[param.name] || req.query[param.name] || (param.name === '@@body@@' ? req.body : undefined) || (param.name === '@@request@@' ? req : undefined) || (param.name === '@@response@@' ? res : undefined));
 
       res.send(func.apply(target, args));
     };
@@ -88,6 +95,34 @@ export function Body() {
     });
 
     Reflect.defineMetadata(bodyMetadataKey, body, target, propertyKey);
+  };
+}
+
+export function Req() {
+  return function (target: Object, propertyKey: string, parameterIndex: number) {
+    let request: { index: number, name: string }[] =
+        Reflect.getOwnMetadata(requestMetadataKey, target, propertyKey) || [];
+
+    request.push({
+      index: parameterIndex,
+      name: '@@request@@'
+    });
+
+    Reflect.defineMetadata(requestMetadataKey, request, target, propertyKey);
+  };
+}
+
+export function Res() {
+  return function (target: Object, propertyKey: string, parameterIndex: number) {
+    let request: { index: number, name: string }[] =
+        Reflect.getOwnMetadata(responseMetadataKey, target, propertyKey) || [];
+
+    request.push({
+      index: parameterIndex,
+      name: '@@response@@'
+    });
+
+    Reflect.defineMetadata(responseMetadataKey, request, target, propertyKey);
   };
 }
 

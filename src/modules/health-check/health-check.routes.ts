@@ -1,4 +1,13 @@
-import { Body, Param, Query, Route, Routes } from '../../commons/decorators/routes-register';
+import {
+  Body,
+  Param,
+  Query,
+  Route,
+  Routes,
+  Req,
+  Res,
+} from '../../commons/decorators/routes-register';
+import { Request, Response } from 'express';
 
 @Routes('/')
 export class HealthCheckRoutes {
@@ -6,37 +15,42 @@ export class HealthCheckRoutes {
   @Route('get', '/')
   public healthCheck() {
     return {
-      status: 'OK'
+      status: 'OK',
     };
   }
 
   @Route('get', '/ping')
   public ping() {
     return {
-      status: 'Ping'
+      status: 'Ping',
     };
   }
 
   @Route('get', '/dynamic/:id/ping/:name')
-  public pingDynamic(@Param('id') id: string, @Param('name') name: string, @Query('t') t: string) {
+  public pingDynamic(
+      @Param('id') id: string, @Param('name') name: string,
+      @Query('t') t: string) {
     return {
       id,
       name,
-      t
+      t,
     };
   }
 
   @Route('post', '/dynamic/:id/ping/:name')
-  public pingDynamicPost(@Param('id') id: string,
-    @Param('name') name: string,
-    @Query('t') t: string,
-    @Body() body: any
+  public pingDynamicPost(
+      @Param('id') id: string,
+      @Param('name') name: string,
+      @Query('t') t: string,
+      @Body() body: any,
+      @Req() request: Request,
+      @Res() response: Response,
   ) {
     return {
       id,
       name,
       t,
-      body
+      body,
     };
   }
 }
