@@ -1,0 +1,1 @@
+export * from './modules/health-check/health-check.routes'
