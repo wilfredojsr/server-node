@@ -9,7 +9,7 @@
     "url": "git+https://github.com/wilfredojsr/server-node.git"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   },
   "files": [
     "dist"
