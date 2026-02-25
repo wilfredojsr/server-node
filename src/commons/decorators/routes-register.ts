@@ -54,7 +54,11 @@ export function Route(method: string, path: string, options?: RouteOptions) {
         return func.apply(target, args);
       }
 
-      res.send(func.apply(target, args));
+      const result = func.apply(target, args);
+      if (result instanceof Promise) {
+        return result.then(data => res.send(data)).catch(err => res.status(err.statusCode || 500).send(err));
+      }
+      return res.send(result);
     };
     descriptor.value = route;
   };
