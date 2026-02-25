@@ -25,7 +25,7 @@ export function Command() {
   return function (
       target: any,
       propertyName: string,
-      descriptor: TypedPropertyDescriptor<Function>,
+      descriptor: PropertyDescriptor,
   ) {
     const method = descriptor.value!;
 
