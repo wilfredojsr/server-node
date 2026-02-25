@@ -1,5 +1,6 @@
 import { IsDate, IsOptional, IsPositive, Max } from 'class-validator';
 import { Expose, Transform, Type } from 'class-transformer';
+type json = Record<string, any>;
 
 export enum QueryHttpReqEnum {
   DEFAULT_PAGE = 1,

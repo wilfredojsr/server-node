@@ -3,7 +3,7 @@ import {
   ClassConstructor,
   ClassTransformOptions,
 } from 'class-transformer/types/interfaces';
-import {ValidatorOptions} from 'class-validator';
+import {validateOrReject, ValidatorOptions} from 'class-validator';
 import {Request} from 'express';
 import {QueryHttpReqEnum} from '../dto/query.http.req.dto';
 import {BadRequestException} from '../exceptions/exceptions';

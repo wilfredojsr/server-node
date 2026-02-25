@@ -8,33 +8,26 @@ import {
   Res,
 } from '../../commons/decorators/routes-register';
 import { Request, Response } from 'express';
+import {healthCheckService} from './health-check.service';
 
 @Routes('/')
 export class HealthCheckRoutes {
 
   @Route('get', '/')
   public healthCheck() {
-    return {
-      status: 'OK',
-    };
+    return healthCheckService.healthCheck();
   }
 
   @Route('get', '/ping')
   public ping() {
-    return {
-      status: 'Ping',
-    };
+    return healthCheckService.ping();
   }
 
   @Route('get', '/dynamic/:id/ping/:name')
   public pingDynamic(
       @Param('id') id: string, @Param('name') name: string,
       @Query('t') t: string) {
-    return {
-      id,
-      name,
-      t,
-    };
+    return healthCheckService.pingDynamic({id, name, t});
   }
 
   @Route('post', '/dynamic/:id/ping/:name')
