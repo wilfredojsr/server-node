@@ -21,28 +21,31 @@ export function Type(ClassConstructor) {
   };
 }
 
-export function Command(
-  target: any,
-  propertyName: string,
-  descriptor: TypedPropertyDescriptor<Function>,
-) {
-  const method = descriptor.value!;
+export function Command() {
+  return function (
+      target: any,
+      propertyName: string,
+      descriptor: TypedPropertyDescriptor<Function>,
+  ) {
+    const method = descriptor.value!;
 
-  descriptor.value = async function () {
-    const commandParameters: [number, any] = Reflect.getOwnMetadata(
-      commandParamMetadataKey,
-      target,
-      propertyName,
-    );
-    await Promise.all(
-      commandParameters?.map(async (commandParameter) => {
-        const [index, ClassConstructor] = commandParameter;
-        arguments[index] = await Validator.validate(
-          ClassConstructor,
-          arguments[index],
-        );
-      }) || [],
-    );
-    return method.apply(this, arguments);
-  };
+    descriptor.value = async function () {
+      const commandParameters: [number, any] = Reflect.getOwnMetadata(
+          commandParamMetadataKey,
+          target,
+          propertyName,
+      );
+      await Promise.all(
+          commandParameters?.map(async (commandParameter) => {
+            const [index, ClassConstructor] = commandParameter;
+            arguments[index] = await Validator.validate(
+                ClassConstructor,
+                arguments[index],
+            );
+          }) || [],
+      );
+      return method.apply(this, arguments);
+    };
+  }
 }
+

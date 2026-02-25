@@ -29,12 +29,12 @@ class HealthCheckService {
     };
   }
 
-  @Command
+  @Command()
   pingDynamic(@Type(PingDynamicCommand) cmd: PingDynamicCommand) {
     return cmd;
   }
 
-  @Command
+  @Command()
   pingDynamicPost(@Type(PingDynamicCommandPost) cmd: PingDynamicCommandPost) {
     return 'Ping Dynamic Post';
   }
